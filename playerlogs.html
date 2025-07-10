@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <title>Player Logy</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0a0f1d, #1e2746);
+      color: white;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      color: #00bfff;
+      text-align: center;
+    }
+    #searchInput {
+      width: 100%;
+      max-width: 400px;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+    #logsContainer {
+      background-color: #111827;
+      border-radius: 15px;
+      padding: 20px;
+      max-height: 70vh;
+      overflow-y: auto;
+      box-shadow: 0 0 20px #00bfff80;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 15px;
+      background-color: #00bfff;
+      border: none;
+      border-radius: 12px;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    button:hover {
+      background-color: #009acd;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Player Logy</h1>
+  <input type="text" id="searchInput" placeholder="Vyhľadaj v logoch..." />
+
+  <div id="logsContainer">Načítavam logy...</div>
+
+  <button id="backBtn">Späť na dashboard</button>
+
+  <script>
+    const logsContainer = document.getElementById('logsContainer');
+    const searchInput = document.getElementById('searchInput');
+    const backBtn = document.getElementById('backBtn');
+
+    let logs = JSON.parse(localStorage.getItem('playerLogs')) || [];
+
+    function displayLogs(filter = '') {
+      const filtered = logs.filter(log => log.toLowerCase().includes(filter.toLowerCase()));
+      if (filtered.length === 0) {
+        logsContainer.textContent = 'Nenašli sa žiadne logy.';
+      } else {
+        logsContainer.textContent = filtered.join('\n');
+      }
+    }
+
+    displayLogs();
+
+    searchInput.addEventListener('input', () => {
+      displayLogs(searchInput.value);
+    });
+
+    backBtn.addEventListener('click', () => {
+      window.location.href = 'main.html'; // zmeň podľa názvu hlavnej stránky
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <title>DTT WE:RP - Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0a0f1d, #1e2746);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+    }
+
+    h1 {
+      color: #00bfff;
+      margin: 0;
+    }
+
+    .info {
+      background-color: #111827;
+      border-radius: 15px;
+      padding: 20px 30px;
+      box-shadow: 0 0 20px #00bfff80;
+      text-align: center;
+    }
+
+    .status {
+      font-weight: bold;
+      color: #4ade80;
+    }
+
+    .status.offline {
+      color: #ff6b6b;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 12px;
+      background-color: #00bfff;
+      color: white;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+      min-width: 120px;
+    }
+
+    button:disabled {
+      background-color: #555;
+      cursor: not-allowed;
+    }
+
+    button:hover:not(:disabled) {
+      background-color: #009acd;
+    }
+
+    .section {
+      background-color: #111827;
+      border-radius: 15px;
+      padding: 20px;
+      width: 360px;
+      box-shadow: 0 0 20px #00bfff80;
+      text-align: center;
+    }
+
+    .section-title {
+      font-size: 1.4rem;
+      color: #00bfff;
+      margin-bottom: 10px;
+    }
+
+    .plan-item {
+      font-size: 1rem;
+      color: #ddd;
+      padding: 5px 0;
+      border-bottom: 1px solid #2f3e5e;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .plan-item:last-child {
+      border-bottom: none;
+    }
+
+    .plan-icon {
+      font-size: 1.3rem;
+      user-select: none;
+    }
+
+    .plan-icon.done {
+      color: #4ade80; /* zelená */
+    }
+
+    .plan-icon.notdone {
+      color: #ff4d4d; /* červená */
+    }
+
+    .link-button {
+      margin-top: 10px;
+      background-color: #00bfff;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      display: inline-block;
+    }
+
+    .link-button:hover {
+      background-color: #009acd;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>DTT WE:RP - Nástěnka</h1>
+
+  <div class="info">
+    <div><strong>Prihlásený používateľ:</strong> <span id="loggedUser">-</span></div>
+    <div><strong>Status bota:</strong> <span id="botStatus" class="status offline">offline</span></div>
+  </div>
+
+  <div class="buttons">
+    <button id="startBot">Spustiť bota</button>
+    <button id="stopBot" disabled>Vypnúť bota</button>
+    <button id="playerLogs">Player logy</button>
+    <button id="siteLogs">Logy stránky</button> <!-- NOVÉ TLAČIDLO -->
+    <button id="openPlans">Plány</button>
+    <button id="adminPanel">Admin</button>
+    <button id="logout">Odhlásiť sa</button>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Plány (náhľad)</div>
+    <div id="plansPreview"></div>
+    <a href="plans.html" class="link-button">Upraviť plány</a>
+  </div>
+
+  <script>
+    // Kontrola prihlasenia
+    const loggedUser = sessionStorage.getItem('user');
+    const loggedUserSpan = document.getElementById('loggedUser');
+    const botStatusSpan = document.getElementById('botStatus');
+    const startBtn = document.getElementById('startBot');
+    const stopBtn = document.getElementById('stopBot');
+
+    if (!loggedUser) {
+      alert('Nie ste prihlásený. Presmerujem vás na prihlasovaciu stránku.');
+      window.location.href = 'login.html';
+    } else {
+      loggedUserSpan.textContent = loggedUser;
+      saveLog('Používateľ sa prihlásil');  // Záznam prihlásenia do logov
+    }
+
+    // Funkcia na ukladanie logu s užívateľom a časom
+    function saveLog(message) {
+      const logs = JSON.parse(localStorage.getItem('playerLogs')) || [];
+      const timestamp = new Date().toLocaleString();
+      const user = sessionStorage.getItem('user') || 'Neznámy';
+      logs.push(`[${timestamp}] (${user}): ${message}`);
+      localStorage.setItem('playerLogs', JSON.stringify(logs));
+    }
+
+    // Stav bota z uloženia alebo default offline
+    let botStatus = sessionStorage.getItem('botStatus') || 'offline';
+
+    function updateBotStatus(status) {
+      botStatusSpan.textContent = status;
+      botStatusSpan.classList.toggle('offline', status === 'offline');
+      startBtn.disabled = status === 'online';
+      stopBtn.disabled = status === 'offline';
+    }
+
+    updateBotStatus(botStatus);
+
+    // Tlačidlá spustenia a vypnutia bota
+    startBtn.addEventListener('click', () => {
+      botStatus = 'online';
+      sessionStorage.setItem('botStatus', botStatus);
+      updateBotStatus(botStatus);
+      saveLog('Bot bol spustený');
+    });
+
+    stopBtn.addEventListener('click', () => {
+      botStatus = 'offline';
+      sessionStorage.setItem('botStatus', botStatus);
+      updateBotStatus(botStatus);
+      saveLog('Bot bol vypnutý');
+    });
+
+    // Presmerovania na ostatné stránky
+    document.getElementById('playerLogs').addEventListener('click', () => {
+      window.location.href = 'playerlogs.html';
+    });
+
+    document.getElementById('siteLogs').addEventListener('click', () => {
+      window.location.href = 'logy.html';
+    });
+
+    document.getElementById('openPlans').addEventListener('click', () => {
+      window.location.href = 'plans.html';
+    });
+
+    document.getElementById('adminPanel').addEventListener('click', () => {
+      window.location.href = 'admin.html';
+    });
+
+    document.getElementById('logout').addEventListener('click', () => {
+      sessionStorage.clear();
+      window.location.href = 'login.html';
+    });
+
+    // Náhľad plánov s ikonami ✔️ a ❌
+    const plansPreview = document.getElementById('plansPreview');
+    const storedPlans = JSON.parse(localStorage.getItem('plans')) || [
+      { text: 'Pridať viac ticket kategórií', done: false },
+      { text: 'Zaviesť databázu používateľov', done: false },
+      { text: 'Implementovať roly pre členov tímu', done: false },
+      { text: 'Možnosť vyhľadávať v logoch', done: false },
+      { text: 'Tematické skiny pre dashboard', done: false }
+    ];
+
+    plansPreview.innerHTML = storedPlans
+      .slice(0, 5)
+      .map(plan => `
+        <div class="plan-item">
+          <span class="plan-icon ${plan.done ? 'done' : 'notdone'}">${plan.done ? '✔️' : '❌'}</span>
+          ${plan.text}
+        </div>`)
+      .join('');
+  </script>
+
+</body>
+</html>

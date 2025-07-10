@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8">
+  <title>Plány</title>
+  <style>
+    body {
+      background-color: #0a0a0a;
+      color: #cce6ff;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #3399ff;
+      padding-bottom: 10px;
+      margin-bottom: 30px;
+    }
+
+    .menu {
+      font-size: 0.9em;
+      color: #99ccff;
+    }
+
+    h1 {
+      color: #3399ff;
+      margin: 0;
+    }
+
+    .plan {
+      margin-bottom: 25px;
+      padding: 10px;
+      background-color: #121212;
+      border-left: 4px solid #3399ff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .plan-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .status-icon {
+      font-size: 1.5em;
+    }
+
+    .output {
+      margin-top: 10px;
+      font-style: italic;
+      color: #99ccff;
+      margin-left: 30px;
+    }
+
+    button {
+      padding: 6px 16px;
+      background-color: #1a1a1a;
+      color: #cce6ff;
+      border: 1px solid #3399ff;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #004080;
+    }
+
+    #editMode {
+      margin-top: 40px;
+      border-top: 1px solid #3399ff;
+      padding-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Plány</h1>
+    <div class="menu">🗂️ Menu</div>
+  </header>
+
+  <div class="plan">
+    <div class="plan-left">
+      <span class="status-icon" id="ticketStatus">❌</span>
+      <span>1. Tickety</span>
+    </div>
+    <button onclick="showInfo('tickety')">Zobraziť</button>
+  </div>
+  <div class="output" id="ticketOutput"></div>
+
+  <div class="plan">
+    <div class="plan-left">
+      <span class="status-icon" id="electionStatus">✅</span>
+      <span>2. Voľby</span>
+    </div>
+    <button onclick="showInfo('volby')">Zobraziť</button>
+  </div>
+  <div class="output" id="electionOutput"></div>
+
+  <div id="editMode">
+    <h2>Úprava stavov</h2>
+    <button onclick="toggleStatus('ticket')">Prepnúť Tickety</button>
+    <button onclick="toggleStatus('election')">Prepnúť Voľby</button>
+  </div>
+
+  <script>
+    function showInfo(type) {
+      if (type === 'tickety') {
+        document.getElementById('ticketOutput').innerText = 'Nedostupné';
+      } else if (type === 'volby') {
+        document.getElementById('electionOutput').innerText = 'Plánujeme 11.7.25';
+      }
+    }
+
+    function toggleStatus(item) {
+      const icon = document.getElementById(item + 'Status');
+      icon.textContent = icon.textContent === '❌' ? '✅' : '❌';
+    }
+  </script>
+
+</body>
+</html>

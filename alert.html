@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <title>ERROR ALERT</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background-color: #cc0000;
+      color: white;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      user-select: none;
+      text-align: center;
+      padding: 20px;
+      gap: 30px;
+    }
+    h1 {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      text-shadow: 0 0 20px #ff0000;
+    }
+    button {
+      font-size: 2.5rem;
+      background-color: #b30000;
+      border: none;
+      border-radius: 15px;
+      padding: 20px 60px;
+      color: white;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      box-shadow: 0 0 15px #ff4d4d;
+      transition: background-color 0.3s ease;
+      min-width: 280px;
+      justify-content: center;
+    }
+    button:hover {
+      background-color: #800000;
+    }
+    .emoji {
+      font-size: 3.5rem;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>ERROR ALERT</h1>
+
+  <button id="stopBtn"><span class="emoji">🛑</span> STOP!</button>
+  <button id="unlockBtn" style="background-color: #007700; box-shadow: 0 0 15px #00cc00;">
+    <span class="emoji">✅</span> SPRÍSTUPNIŤ
+  </button>
+
+  <script>
+    const stopBtn = document.getElementById('stopBtn');
+    const unlockBtn = document.getElementById('unlockBtn');
+
+    // Po kliknutí STOP! zablokuje index.html (nastaví flag) a vymaže session
+    stopBtn.onclick = () => {
+      sessionStorage.clear();
+      localStorage.setItem('blocked', 'true');
+      alert('Bot a index stránka sú teraz zablokované.');
+    };
+
+    // Po kliknutí SPRÍSTUPNIŤ odblokuje index.html (zruší flag) a presmeruje na index.html
+    unlockBtn.onclick = () => {
+      localStorage.removeItem('blocked');
+      alert('Index stránka je opäť prístupná.');
+      window.location.href = 'index.html';
+    };
+  </script>
+
+</body>
+</html>

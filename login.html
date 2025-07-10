@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DTT WE:RP - Prihlásenie</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #0a0f1d, #1e2746);
+      font-family: 'Segoe UI', sans-serif;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    #loginBox {
+      background-color: #111827;
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px #00bfff80;
+      width: 320px;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 25px;
+      color: #00bfff;
+    }
+    input {
+      width: 100%;
+      padding: 12px 10px;
+      margin: 10px 0 20px 0;
+      border-radius: 10px;
+      border: none;
+      font-size: 1rem;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      background-color: #00bfff;
+      font-weight: bold;
+      font-size: 1rem;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background-color: #009acd;
+    }
+    #errorMsg {
+      margin-top: 10px;
+      min-height: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="loginBox">
+    <h1>Prihlásenie</h1>
+    <input type="text" id="username" placeholder="Meno" autocomplete="off" />
+    <input type="password" id="password" placeholder="Heslo" autocomplete="off" />
+    <button id="loginBtn">Prihlásiť sa</button>
+    <div id="errorMsg"></div>
+  </div>
+
+  <script>
+    // Heslá len pre Policiu a ERROR + 3 bežných užívateľov
+    const credentials = {
+      'Policia': 'SR',
+      'ERROR': '!',
+      'Mattad': 'TatkoŠmolko',
+      'George': 'Borec',
+      'Brock': 'Šmolko'
+    };
+
+    const loginBtn = document.getElementById('loginBtn');
+    const errorMsg = document.getElementById('errorMsg');
+
+    function pridajLog(user, sprava) {
+      const logs = JSON.parse(localStorage.getItem('playerLogs')) || [];
+      const casBratislava = new Date().toLocaleString('sk-SK', { timeZone: 'Europe/Bratislava' });
+      logs.push(`[${casBratislava}] (${user}): ${sprava}`);
+      localStorage.setItem('playerLogs', JSON.stringify(logs));
+    }
+
+    loginBtn.addEventListener('click', () => {
+      const user = document.getElementById('username').value.trim();
+      const pass = document.getElementById('password').value;
+
+      if (!user || !pass) {
+        errorMsg.style.color = '#ff6b6b';
+        errorMsg.textContent = 'Vyplňte meno a heslo.';
+        return;
+      }
+
+      // Polícia
+      if (user === 'Policia' && pass === credentials['Policia']) {
+        sessionStorage.setItem('user', user);
+        pridajLog(user, 'Prihlásenie Policajt');
+        errorMsg.style.color = '#4ade80';
+        errorMsg.textContent = 'Vitaj, Policajt!';
+        setTimeout(() => window.location.href = 'policia.html', 1000);
+        return;
+      }
+
+      // ERROR
+      if (user === 'ERROR' && pass === credentials['ERROR']) {
+        sessionStorage.setItem('user', user);
+        pridajLog(user, 'Prihlásenie ERROR');
+        errorMsg.style.color = '#4ade80';
+        errorMsg.textContent = 'Presmerovanie na alert stránku...';
+        setTimeout(() => window.location.href = 'alert.html', 1000);
+        return;
+      }
+
+      // Bežné prihlásenie (Mattad, George, Brock)
+      if (credentials[user] && credentials[user] === pass) {
+        sessionStorage.setItem('user', user);
+        pridajLog(user, 'Bežné prihlásenie úspešné');
+        errorMsg.style.color = '#4ade80';
+        errorMsg.textContent = `Prihlásenie úspešné, vitaj, ${user}!`;
+        setTimeout(() => window.location.href = 'main.html', 1000);
+        return;
+      }
+
+      errorMsg.style.color = '#ff6b6b';
+      errorMsg.textContent = 'Nesprávne meno alebo heslo.';
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Enter') loginBtn.click();
+    });
+  </script>
+
+</body>
+</html>

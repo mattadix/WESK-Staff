@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8" />
+<title>Polícia - Vyhľadávanie zákonov</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #0a0f1d;
+    color: white;
+    padding: 20px;
+    user-select: none;
+  }
+  input {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+  }
+  .law-entry {
+    background-color: #1e2746;
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #00bfff66;
+  }
+  .law-entry h3 {
+    margin: 0 0 8px 0;
+    color: #00bfff;
+  }
+</style>
+</head>
+<body>
+
+<h1>Vyhľadávanie zákonov SR</h1>
+<input type="text" id="searchInput" placeholder="Zadajte názov zákona alebo kľúčové slovo..." autocomplete="off" />
+
+<div id="results"></div>
+
+<script>
+  const laws = [
+    {
+      title: "Trestný zákonník",
+      year: 2005,
+      number: 300,
+      paragraphs: [
+        { number: "§ 1", text: "Účel a rozsah pôsobnosti Trestného zákonníka.", penalty: "-" },
+        { number: "§ 2", text: "Základné princípy trestného práva.", penalty: "-" },
+        { number: "§ 3", text: "Trestná zodpovednosť fyzických osôb.", penalty: "-" },
+        { number: "§ 4", text: "Trestná zodpovednosť právnických osôb.", penalty: "-" },
+        { number: "§ 5", text: "Podmienky trestnej zodpovednosti.", penalty: "-" },
+        { number: "§ 6", text: "Nezákonné konanie.", penalty: "-" },
+        { number: "§ 7", text: "Stav vylučujúci protiprávnosť.", penalty: "-" },
+        { number: "§ 8", text: "Následky protiprávneho konania.", penalty: "-" },
+        { number: "§ 9", text: "Trestnosť konania.", penalty: "-" },
+        { number: "§ 10", text: "Príčinná súvislosť.", penalty: "-" },
+        { number: "§ 11", text: "Zavinovanie trestného činu.", penalty: "-" },
+        { number: "§ 12", text: "Účinná ľútosť.", penalty: "-" },
+        { number: "§ 13", text: "Zvláštne prípady zodpovednosti.", penalty: "-" },
+        { number: "§ 14", text: "Spoluúčasť na trestnom čine.", penalty: "-" },
+        { number: "§ 15", text: "Páchateľ, účastník a spolupáchateľ.", penalty: "-" },
+        { number: "§ 16", text: "Omyl a omyl v skutku.", penalty: "-" },
+        { number: "§ 17", text: "Trestné činy spáchané neplnoletými.", penalty: "-" },
+        { number: "§ 18", text: "Ochrana osobitných skupín.", penalty: "-" },
+        { number: "§ 19", text: "Trestné činy proti životu a zdraviu.", penalty: "-" },
+        { number: "§ 20", text: "Trestné činy proti majetku.", penalty: "-" },
+        { number: "§ 21", text: "Krajna núdza (obrannej núdze).", penalty: "-" },
+        { number: "§ 22", text: "Nutná obrana.", penalty: "-" },
+        { number: "§ 23", text: "Ochrana oprávnených záujmov.", penalty: "-" },
+        { number: "§ 24", text: "Odpustenie trestnosti.", penalty: "-" },
+        { number: "§ 25", text: "Podmienečné zastavenie trestného stíhania.", penalty: "-" },
+        { number: "§ 26", text: "Súdna ochrana práv.", penalty: "-" },
+        { number: "§ 27", text: "Vyhlásenie neplatnosti zákona.", penalty: "-" },
+        { number: "§ 28", text: "Premlčanie trestného stíhania.", penalty: "-" },
+        { number: "§ 29", text: "Následky trestného činu.", penalty: "-" },
+        { number: "§ 30", text: "Trestné činy proti bezpečnosti a poriadku.", penalty: "-" },
+        { number: "§ 31", text: "Trestné činy proti verejným právam.", penalty: "-" },
+        { number: "§ 32", text: "Trestné činy proti správe vecí verejných.", penalty: "-" },
+        { number: "§ 33", text: "Trestné činy proti právam na ochranu osobnosti.", penalty: "-" },
+        { number: "§ 34", text: "Trestné činy proti slobode.", penalty: "-" },
+        { number: "§ 35", text: "Trestné činy proti majetkovým právam.", penalty: "-" },
+        { number: "§ 36", text: "Trestné činy proti hospodárstvu.", penalty: "-" },
+        { number: "§ 37", text: "Trestné činy proti občianskym právam.", penalty: "-" },
+        { number: "§ 38", text: "Trestné činy proti mieru a ľudskosti.", penalty: "-" },
+        { number: "§ 39", text: "Trestné činy proti vojenskej službe.", penalty: "-" },
+        { number: "§ 40", text: "Trestné činy proti životnému prostrediu.", penalty: "-" },
+        { number: "§ 41", text: "Trestné činy proti ochrane hospodárskej súťaže.", penalty: "-" },
+        { number: "§ 42", text: "Trestné činy proti verejnému zdraví.", penalty: "-" },
+        { number: "§ 43", text: "Trestné činy proti autorskému právu.", penalty: "-" },
+        { number: "§ 44", text: "Trestné činy proti služobným povinnostiam.", penalty: "-" },
+        { number: "§ 45", text: "Trestné činy proti služobnej dôvere.", penalty: "-" },
+        { number: "§ 46", text: "Trestné činy proti vojenskej bezpečnosti.", penalty: "-" },
+        { number: "§ 47", text: "Trestné činy proti obrane štátu.", penalty: "-" },
+        { number: "§ 48", text: "Trestné činy proti ochrane utajovaných skutočností.", penalty: "-" },
+        { number: "§ 49", text: "Trestné činy proti ochrane osobných údajov.", penalty: "-" },
+        { number: "§ 50", text: "Trestné činy proti verejnej správe.", penalty: "-" },
+        { number: "§ 51", text: "Trestné činy proti obchodu.", penalty: "-" },
+        { number: "§ 52", text: "Trestné činy proti verejným financiám.", penalty: "-" },
+        { number: "§ 53", text: "Trestné činy proti práve na ochranu hospodárskej súťaže.", penalty: "-" },
+        { number: "§ 54", text: "Trestné činy proti doprave.", penalty: "-" },
+        { number: "§ 55", text: "Trestné činy proti poľnohospodárstvu.", penalty: "-" },
+        { number: "§ 56", text: "Trestné činy proti lesníctvu.", penalty: "-" },
+        { number: "§ 57", text: "Trestné činy proti ochrane prírody.", penalty: "-" },
+        { number: "§ 58", text: "Trestné činy proti občianskemu pokoju.", penalty: "-" },
+        { number: "§ 59", text: "Trestné činy proti verejnému poriadku.", penalty: "-" },
+        { number: "§ 60", text: "Trestné činy proti verejnému zdraví a bezpečnosti.", penalty: "-" },
+        { number: "§ 61", text: "Trestné činy proti služobnej povinnosti.", penalty: "-" },
+        { number: "§ 62", text: "Trestné činy proti životu a zdraviu.", penalty: "-" },
+        { number: "§ 63", text: "Trestné činy proti majetku.", penalty: "-" },
+        { number: "§ 64", text: "Trestné činy proti rodine a mladistvým.", penalty: "-" },
+        { number: "§ 65", text: "Trestné činy proti slobode a ľudskej dôstojnosti.", penalty: "-" },
+        { number: "§ 66", text: "Trestné činy proti právam a slobodám občanov.", penalty: "-" },
+        { number: "§ 67", text: "Trestné činy proti spravodlivosti.", penalty: "-" },
+        { number: "§ 68", text: "Trestné činy proti štátu a jeho bezpečnosti.", penalty: "-" },
+        { number: "§ 69", text: "Trestné činy proti životnému prostrediu.", penalty: "-" },
+        { number: "§ 70", text: "Trestné činy proti verejnému záujmu.", penalty: "-" },
+
+
+        
+            { number: "§ 70", text: "Príprava a podpora trestného činu.", penalty: "väzenie do 5 rokov" },
+          { number: "§ 71", text: "Zabitie.", penalty: "väzenie od 5 do 15 rokov" },
+          { number: "§ 72", text: "Úmyselné ublíženie na zdraví.", penalty: "väzenie od 1 do 8 rokov" },
+          { number: "§ 73", text: "Neúmyselné ublíženie na zdraví.", penalty: "väzenie do 3 rokov" },
+          { number: "§ 74", text: "Týránie blízkej osoby alebo zverenej osoby.", penalty: "väzenie do 2 rokov" },
+          { number: "§ 75", text: "Útek z výkonu trestu.", penalty: "väzenie do 1 roka" },
+          { number: "§ 76", text: "Porušovanie domovej slobody.", penalty: "peňažný trest alebo väzenie do 2 rokov" },
+          { number: "§ 77", text: "Zneužívanie právomoci verejného činiteľa.", penalty: "väzenie od 2 do 10 rokov" },
+          { number: "§ 78", text: "Podplácanie.", penalty: "väzenie od 1 do 8 rokov" },
+          { number: "§ 79", text: "Podvod.", penalty: "väzenie do 5 rokov" },
+          { number: "§ 80", text: "Krádež.", penalty: "väzenie do 3 rokov" },
+          { number: "§ 81", text: "Vydieranie.", penalty: "väzenie do 8 rokov" },
+          { number: "§ 82", text: "Porušovanie autorských práv.", penalty: "peňažný trest alebo väzenie do 3 rokov" },
+          { number: "§ 83", text: "Násilné prevzatie vozidla.", penalty: "väzenie do 5 rokov" },
+          { number: "§ 84", text: "Poškodzovanie cudzej veci.", penalty: "peňažný trest alebo väzenie do 2 rokov" },
+          { number: "§ 85", text: "Zneužitie dôvernej informácie.", penalty: "väzenie do 3 rokov" },
+          { number: "§ 86", text: "Ohrozovanie zdravia z nedbanlivosti.", penalty: "väzenie do 2 rokov" },
+          { number: "§ 87", text: "Podvodné konanie v hospodárstve.", penalty: "väzenie do 5 rokov" },
+          { number: "§ 88", text: "Zneužitie finančných prostriedkov.", penalty: "väzenie do 8 rokov" },
+          { number: "§ 89", text: "Zneužívanie postavenia v obchodnom styku.", penalty: "väzenie do 5 rokov" },
+          { number: "§ 90", text: "Neoprávnené nakladanie s osobnými údajmi.", penalty: "peňažný trest" },
+          { number: "§ 91", text: "Ohrozenie bezpečnosti na cestách.", penalty: "väzenie do 3 rokov" },
+          { number: "§ 92", text: "Porušovanie zákazu činnosti.", penalty: "peňažný trest alebo väzenie do 1 roka" },
+          { number: "§ 93", text: "Výroba a obchod s nelegálnymi drogami.", penalty: "väzenie od 5 do 15 rokov" },
+          { number: "§ 94", text: "Neoprávnené ozbrojovanie.", penalty: "väzenie do 8 rokov" },
+          { number: "§ 95", text: "Účasť na organizovanej zločineckej skupine.", penalty: "väzenie od 5 do 15 rokov" },
+          { number: "§ 96", text: "Terorizmus.", penalty: "väzenie od 10 do 20 rokov" },
+          { number: "§ 97", text: "Zneužívanie verejných zdrojov.", penalty: "väzenie do 8 rokov" },
+          { number: "§ 98", text: "Nedovolené ozbrojovanie.", penalty: "väzenie do 5 rokov" },
+          { number: "§ 99", text: "Obchodovanie s ľuďmi.", penalty: "väzenie od 8 do 15 rokov" },
+          { number: "§ 100", text: "Ohrozenie života a zdravia viacerých osôb.", penalty: "väzenie od 10 do 20 rokov" },
+          { number: "§ 101", text: "Úmyselné poškodzovanie životného prostredia.", penalty: "väzenie do 8 rokov" },
+          { number: "§ 102", text: "Neoprávnená výroba toxických látok.", penalty: "väzenie do 10 rokov" },
+          { number: "§ 103", text: "Neoprávnené ozbrojenie alebo výbušniny.", penalty: "väzenie do 10 rokov" },
+          { number: "§ 104", text: "Porušovanie povinností pri manipulácii s nebezpečnými látkami.", penalty: "peňažný trest alebo väzenie do 3 rokov" },
+          { number: "§ 105", text: "Ublíženie na zdraví so smrteľnými následkami.", penalty: "väzenie od 8 do 15 rokov" },
+          { number: "§ 106", text: "Úmyselná vražda.", penalty: "väzenie od 15 do 25 rokov alebo doživotie" },
+          { number: "§ 107", text: "Neúmyselná vražda.", penalty: "väzenie do 10 rokov" },
+          { number: "§ 108", text: "Zneužitie právomoci verejného činiteľa.", penalty: "väzenie do 10 rokov" },
+          { number: "§ 109", text: "Zavinené ublíženie na zdraví.", penalty: "väzenie do 5 rokov" },
+          { number: "§ 110", text: "Násilné vniknutie do obydlia alebo iného priestoru.", penalty: "väzenie do 3 rokov" },
+          { number: "§ 111", text: "Porušovanie zákazu prístupu.", penalty: "peňažný trest alebo väzenie do 1 roka" },
+          { number: "§ 112", text: "Ohrozovanie verejného poriadku.", penalty: "peňažný trest alebo väzenie do 2 rokov" },
+          { number: "§ 113", text: "Podnecovanie k nenávisti.", penalty: "väzenie do 3 rokov" },
+          { number: "§ 114", text: "Poškodzovanie cudzieho majetku.", penalty: "peňažný trest alebo väzenie do 2 rokov" },
+          { number: "§ 115", text: "Zavinené poškodenie majetku.", penalty: "peňažný trest" },
+          { number: "§ 116", text: "Neoprávnený zásah do počítačového systému.", penalty: "väzenie do 3 rokov" },
+          { number: "§ 117", text: "Zneužitie informácií v obchodnom styku.", penalty: "peňažný trest alebo väzenie do 2 rokov" },
+          { number: "§ 118", text: "Vydávanie nepravdivých údajov.", penalty: "peňažný trest" },
+          { number: "§ 119", text: "Falšovanie dokladov.", penalty: "väzenie do 5 rokov" },
+          { number: "§ 120", text: "Neoprávnené použitie cudzieho dokladu.", penalty: "peňažný trest alebo väzenie do 2 rokov" },
+
+
+            { number: "§ 120", text: "Neoprávnené použitie cudzieho dokladu. Trestné je používanie alebo prechovávanie cudzieho dokladu bez súhlasu oprávnenej osoby.", penalty: "Peňažný trest alebo väzenie do 2 rokov" },
+
+  { number: "§ 121", text: "Falšovanie peňažných prostriedkov a platidiel. Výroba, použitie alebo držanie falzifikátov.", penalty: "Väzenie do 5 rokov" },
+  { number: "§ 122", text: "Podvod v hospodárskej činnosti. Úmyselné uvedenie v omyl pri obchodných transakciách.", penalty: "Väzenie do 3 rokov" },
+  { number: "§ 123", text: "Neoprávnená výroba, držanie a obchod s omamnými a psychotropnými látkami.", penalty: "Väzenie od 5 do 15 rokov" },
+  { number: "§ 124", text: "Porušovanie autorských práv a práv súvisiacich s autorským právom.", penalty: "Peňažný trest alebo väzenie do 3 rokov" },
+  { number: "§ 125", text: "Násilné prevzatie motorového vozidla.", penalty: "Väzenie do 5 rokov" },
+  { number: "§ 126", text: "Ublíženie na zdraví so smrteľným následkom.", penalty: "Väzenie od 8 do 15 rokov" },
+  { number: "§ 127", text: "Úmyselné zabitie.", penalty: "Väzenie od 15 do 25 rokov alebo doživotie" },
+  { number: "§ 128", text: "Neoprávnené ozbrojovanie.", penalty: "Väzenie do 8 rokov" },
+  { number: "§ 129", text: "Obchodovanie s ľuďmi.", penalty: "Väzenie od 8 do 15 rokov" },
+  { number: "§ 130", text: "Terorizmus.", penalty: "Väzenie od 10 do 20 rokov" },
+  { number: "§ 131", text: "Porušovanie povinností pri manipulácii s nebezpečnými látkami.", penalty: "Peňažný trest alebo väzenie do 3 rokov" },
+  { number: "§ 132", text: "Ohrozovanie verejného poriadku.", penalty: "Peňažný trest alebo väzenie do 2 rokov" },
+  { number: "§ 133", text: "Útok na verejného činiteľa, vrátane streľby po ňom.", penalty: "Väzenie od 5 do 15 rokov" },
+  { number: "§ 134", text: "Násilný vnik do obydlia alebo iného priestoru.", penalty: "Väzenie do 3 rokov" },
+  { number: "§ 135", text: "Zneužitie právomoci verejného činiteľa.", penalty: "Väzenie do 10 rokov" },
+  { number: "§ 136", text: "Podplácanie.", penalty: "Väzenie od 1 do 8 rokov" },
+  { number: "§ 137", text: "Úmyselné poškodzovanie cudzej veci.", penalty: "Peňažný trest alebo väzenie do 2 rokov" },
+  { number: "§ 138", text: "Krádež.", penalty: "Väzenie do 3 rokov" },
+  { number: "§ 139", text: "Vytváranie všeobecného ohrozenia.", penalty: "Väzenie od 2 do 10 rokov" },
+  { number: "§ 140", text: "Násilné prevzatie vozidla.", penalty: "Väzenie do 5 rokov" },
+  { number: "§ 141", text: "Porušovanie domovej slobody.", penalty: "Peňažný trest alebo väzenie do 2 rokov" },
+  { number: "§ 142", text: "Týranie blízkej alebo zverenej osoby.", penalty: "Väzenie do 2 rokov" },
+  { number: "§ 143", text: "Výroba a držanie nebezpečných látok bez povolenia.", penalty: "Väzenie do 10 rokov" },
+  { number: "§ 144", text: "Obchodovanie s nelegálnymi drogami.", penalty: "Väzenie od 5 do 15 rokov" },
+  { number: "§ 145", text: "Neoprávnený zásah do počítačového systému.", penalty: "Väzenie do 3 rokov" },
+  { number: "§ 146", text: "Porušovanie zákazu činnosti.", penalty: "Peňažný trest alebo väzenie do 1 roka" },
+  { number: "§ 147", text: "Nedovolené ozbrojovanie.", penalty: "Väzenie do 5 rokov" },
+  { number: "§ 148", text: "Ohrozenie života a zdravia viacerých osôb.", penalty: "Väzenie od 10 do 20 rokov" },
+  { number: "§ 149", text: "Úmyselné poškodzovanie životného prostredia.", penalty: "Väzenie do 8 rokov" },
+  { number: "§ 150", text: "Neoprávnená výroba toxických látok.", penalty: "Väzenie do 10 rokov" },
+  { number: "§ 151", text: "Porušovanie povinností pri manipulácii s nebezpečnými látkami.", penalty: "Peňažný trest alebo väzenie do 3 rokov" },
+  { number: "§ 152", text: "Ublíženie na zdraví so smrteľnými následkami.", penalty: "Väzenie od 8 do 15 rokov" },
+  { number: "§ 153", text: "Úmyselná vražda.", penalty: "Väzenie od 15 do 25 rokov alebo doživotie" },
+  { number: "§ 154", text: "Neúmyselná vražda.", penalty: "Väzenie do 10 rokov" },
+  { number: "§ 155", text: "Ublíženie na zdraví.", penalty: "Rôzne stupne zranení a poškodenia zdravia" },
+  { number: "§ 156", text: "Krajna núdza (obrannej núdze).", penalty: "Omylom alebo účelne konanie na odvrátenie nebezpečenstva" },
+  { number: "§ 157", text: "Krádež.", penalty: "Väzenie do 3 rokov" },
+  { number: "§ 158", text: "Poškodenie cudzieho majetku.", penalty: "Peňažný trest alebo väzenie do 2 rokov" },
+  { number: "§ 159", text: "Násilný vnik do cudzieho pozemku.", penalty: "Väzenie do 3 rokov" },
+  { number: "§ 160", text: "Útok na verejného činiteľa.", penalty: "Väzenie od 5 do 15 rokov" },
+  { number: "§ 161", text: "Porušovanie zákazu činnosti.", penalty: "Peňažný trest alebo väzenie do 1 roka" },
+  { number: "§ 162", text: "Výroba a obchod s nelegálnymi drogami.", penalty: "Väzenie od 5 do 15 rokov" },
+  { number: "§ 163", text: "Obchodovanie s ľuďmi.", penalty: "Väzenie od 8 do 15 rokov" },
+  { number: "§ 164", text: "Zneužívanie právomoci verejného činiteľa.", penalty: "Väzenie do 10 rokov" },
+  { number: "§ 165", text: "Podplácanie.", penalty: "Väzenie od 1 do 8 rokov" },
+  { number: "§ 166", text: "Zneužitie finančných prostriedkov.", penalty: "Väzenie do 8 rokov" },
+  { number: "§ 167", text: "Podvod.", penalty: "Väzenie do 5 rokov" },
+  { number: "§ 168", text: "Násilný prevzatie vozidla.", penalty: "Väzenie do 5 rokov" },
+  { number: "§ 169", text: "Zavinené poškodenie majetku.", penalty: "Peňažný trest" },
+  { number: "§ 170", text: "Neoprávnené nakladanie s osobnými údajmi.", penalty: "Peňažný trest" },
+  { number: "§ 171", text: "Porušovanie autorských práv.", penalty: "Peňažný trest alebo väzenie do 3 rokov" },
+  { number: "§ 172", text: "Ohrozovanie bezpečnosti na cestách.", penalty: "Väzenie do 3 rokov" },
+  { number: "§ 173", text: "Podnecovanie k nenávisti.", penalty: "Väzenie do 3 rokov" },
+  { number: "§ 174", text: "Porušovanie domovej slobody.", penalty: "Peňažný trest alebo väzenie do 2 rokov" },
+  { number: "§ 175", text: "Týranie blízkej osoby alebo zverenej osoby.", penalty: "Väzenie do 2 rokov" },
+  { number: "§ 176", text: "Útek z výkonu trestu.", penalty: "Väzenie do 1 roka" },
+  { number: "§ 177", text: "Nedovolené ozbrojovanie.", penalty: "Väzenie do 8 rokov" },
+  { number: "§ 178", text: "Účasť na organizovanej zločineckej skupine.", penalty: "Väzenie od 5 do 15 rokov" },
+  { number: "§ 179", text: "Zneužívanie právomocí verejného činiteľa.", penalty: "Väzenie do 10 rokov" },
+{ number: "§ 180", text: "Porušovanie povinností pri manipulácii s nebezpečnými látkami.", penalty: "Peňažný trest alebo väzenie do 3 rokov" },
+{ number: "§ 181", text: "Zneužívanie právomoci verejného činiteľa.", penalty: "Väzenie do 10 rokov" },
+  { number: "§ 182", text: "Neoprávnené nakladanie s osobnými údajmi.", penalty: "Peňažný trest alebo väzenie do 2 rokov" },
+  { number: "§ 183", text: "Falšovanie verejnej listiny.", penalty: "Väzenie do 5 rokov" },
+  { number: "§ 184", text: "Podvod pri verejnej súťaži.", penalty: "Väzenie do 3 rokov" },
+  { number: "§ 185", text: "Neoprávnené ozbrojovanie a držba zbraní.", penalty: "Väzenie do 8 rokov" },
+  { number: "§ 186", text: "Obchodovanie s ľuďmi.", penalty: "Väzenie od 8 do 15 rokov" },
+  { number: "§ 187", text: "Úmyselné poškodenie majetku.", penalty: "Peňažný trest alebo väzenie do 3 rokov" },
+  { number: "§ 188", text: "Úmyselné zabitie.", penalty: "Väzenie od 15 do 25 rokov alebo doživotie" },
+  { number: "§ 189", text: "Nedovolené ozbrojovanie.", penalty: "Väzenie do 8 rokov" },
+  { number: "§ 190", text: "Terorizmus a príprava teroristického činu.", penalty: "Väzenie od 10 do 20 rokov" },
+  { number: "§ 191", text: "Neoprávnená výroba toxických látok.", penalty: "Väzenie do 10 rokov" },
+  { number: "§ 192", text: "Podplácanie a korupcia.", penalty: "Väzenie od 1 do 8 rokov" },
+  { number: "§ 193", text: "Obchodovanie s omamnými a psychotropnými látkami.", penalty: "Väzenie od 5 do 15 rokov" },
+  { number: "§ 194", text: "Útok na verejného činiteľa.", penalty: "Väzenie od 5 do 15 rokov" },
+  { number: "§ 195", text: "Zneužívanie právomoci verejného činiteľa.", penalty: "Väzenie do 10 rokov" },
+  { number: "§ 196", text: "Neoprávnené zasahovanie do počítačových systémov.", penalty: "Väzenie do 3 rokov" },
+  { number: "§ 197", text: "Porušovanie autorských práv.", penalty: "Peňažný trest alebo väzenie do 3 rokov" },
+  { number: "§ 198", text: "Zneužívanie finančných prostriedkov.", penalty: "Väzenie do 8 rokov" },
+  { number: "§ 199", text: "Týranie blízkej alebo zverenej osoby.", penalty: "Väzenie do 2 rokov" },
+  { number: "§ 200", text: "Zneužívanie obchodného tajomstva.", penalty: "Peňažný trest alebo väzenie do 2 rokov" },
+  { number: "§ 201", text: "Neoprávnené nakladanie s osobnými údajmi.", penalty: "Peňažný trest" },
+  { number: "§ 202", text: "Podvod.", penalty: "Väzenie do 5 rokov" },
+  { number: "§ 203", text: "Úmyselné poškodenie životného prostredia.", penalty: "Väzenie do 8 rokov" },
+  { number: "§ 204", text: "Výroba, držba a obchod s nelegálnymi drogami.", penalty: "Väzenie od 5 do 15 rokov" },
+  { number: "§ 205", text: "Porušovanie povinností pri manipulácii s nebezpečnými látkami.", penalty: "Peňažný trest alebo väzenie do 3 rokov" },
+  { number: "§ 206", text: "Násilné prevzatie motorového vozidla.", penalty: "Väzenie do 5 rokov" },
+  { number: "§ 207", text: "Útek z výkonu trestu.", penalty: "Väzenie do 1 roka" },
+  { number: "§ 208", text: "Násilný vnik do cudzieho pozemku alebo obydlia.", penalty: "Väzenie do 3 rokov" },
+  { number: "§ 209", text: "Výroba a držba nebezpečných látok bez povolenia.", penalty: "Väzenie do 10 rokov" },
+  { number: "§ 210", text: "Porušovanie domovej slobody.", penalty: "Peňažný trest alebo väzenie do 2 rokov" },
+  { number: "§ 211", text: "Krádež.", penalty: "Väzenie do 3 rokov" },
+  { number: "§ 212", text: "Násilný vnik do obydlia alebo iného nebytového priestoru.", penalty: "Väzenie do 3 rokov" },
+  { number: "§ 213", text: "Krajna núdza.", penalty: "Obranná núdza na odvrátenie nebezpečenstva" },
+  { number: "§ 214", text: "Ublíženie na zdraví.", penalty: "Rôzne stupne zranení a poškodenia zdravia" },
+  { number: "§ 215", text: "Vytváranie všeobecného ohrozenia.", penalty: "Väzenie od 2 do 10 rokov" },
+  { number: "§ 216", text: "Streľba po verejnom činiteľovi.", penalty: "Väzenie od 5 do 15 rokov" },
+  { number: "§ 217", text: "Poškodenie cudzieho majetku.", penalty: "Peňažný trest alebo väzenie do 2 rokov" },
+  { number: "§ 218", text: "Úmyselné zabitie s okolnosťami.", penalty: "Väzenie od 15 do 25 rokov alebo doživotie" },
+  { number: "§ 219", text: "Obchodovanie s ľuďmi.", penalty: "Väzenie od 8 do 15 rokov" },
+  { number: "§ 220", text: "Podplácanie a korupcia.", penalty: "Väzenie od 1 do 8 rokov" },
+  { number: "§ 221", text: "Týranie blízkej osoby alebo zverenej osoby.", penalty: "Väzenie do 2 rokov" },
+  { number: "§ 222", text: "Porušovanie zákona o ochrane osobných údajov.", penalty: "Peňažný trest" },
+  { number: "§ 223", text: "Porušovanie autorských práv a práv súvisiacich.", penalty: "Peňažný trest alebo väzenie do 3 rokov" },
+  { number: "§ 224", text: "Neoprávnené zásahy do počítačových systémov.", penalty: "Väzenie do 3 rokov" },
+  { number: "§ 225", text: "Podvod a sprenevera.", penalty: "Väzenie do 5 rokov" },
+  { number: "§ 226", text: "Úmyselné poškodzovanie životného prostredia.", penalty: "Väzenie do 8 rokov" },
+  { number: "§ 227", text: "Násilné prevzatie vozidla.", penalty: "Väzenie do 5 rokov" },
+  { number: "§ 228", text: "Útok na verejného činiteľa.", penalty: "Väzenie od 5 do 15 rokov" },
+  { number: "§ 229", text: "Neoprávnené ozbrojovanie.", penalty: "Väzenie do 8 rokov" },
+  { number: "§ 230", text: "Terorizmus a príprava teroristického činu.", penalty: "Väzenie od 10 do 20 rokov" },
+  { number: "§ 231", text: "Krádež s násilím.", penalty: "Väzenie do 5 rokov" },
+  { number: "§ 232", text: "Neoprávnené použitie cudzieho dokladu.", penalty: "Peňažný trest alebo väzenie do 2 rokov" },
+  { number: "§ 233", text: "Porušovanie domovej slobody.", penalty: "Peňažný trest alebo väzenie do 2 rokov" },
+  { number: "§ 234", text: "Výroba, držba a obchod s nelegálnymi drogami.", penalty: "Väzenie od 5 do 15 rokov" },
+  { number: "§ 235", text: "Podplácanie a korupcia.", penalty: "Väzenie od 1 do 8 rokov" },
+  { number: "§ 236", text: "Úmyselné poškodenie cudzej veci.", penalty: "Peňažný trest alebo väzenie do 2 rokov" },
+  { number: "§ 237", text: "Obchodovanie s ľuďmi.", penalty: "Väzenie od 8 do 15 rokov" },
+  { number: "§ 238", text: "Neoprávnený zásah do počítačového systému.", penalty: "Väzenie do 3 rokov" },
+  { number: "§ 239", text: "Úmyselné zabitie s okolnosťami.", penalty: "Väzenie od 15 do 25 rokov alebo doživotie" },
+  { number: "§ 240", text: "Zneužívanie právomoci verejného činiteľa.", penalty: "Väzenie do 10 rokov" },
+  { number: "§ 241", text: "Podvod v hospodárskej činnosti.", penalty: "Väzenie do 3 rokov" },
+  { number: "§ 242", text: "Porušovanie zákona o ochrane osobných údajov.", penalty: "Peňažný trest" },
+  { number: "§ 243", text: "Neoprávnené ozbrojovanie a držba zbraní.", penalty: "Väzenie do 8 rokov" },
+  { number: "§ 244", text: "Útek z výkonu trestu.", penalty: "Väzenie do 1 roka" },
+  { number: "§ 245", text: "Porušovanie povinností pri manipulácii s nebezpečnými látkami.", penalty: "Peňažný trest alebo väzenie do 3 rokov" },
+  { number: "§ 246", text: "Násilné prevzatie motorového vozidla.", penalty: "Väzenie do 5 rokov" },
+  { number: "§ 247", text: "Ublíženie na zdraví.", penalty: "Rôzne stupne zranení a poškodenia zdravia" },
+  { number: "§ 248", text: "Krajna núdza (obrannej núdze).", penalty: "Konanie na odvrátenie nebezpečenstva" },
+  { number: "§ 249", text: "Poškodenie cudzieho majetku.", penalty: "Peňažný trest alebo väzenie do 2 rokov" },
+  { number: "§ 250", text: "Násilný vnik do obydlia alebo iného priestoru.", penalty: "Väzenie do 3 rokov" },
+  { number: "§ 251", text: "Streľba po verejnom činiteľovi.", penalty: "Väzenie od 5 do 15 rokov" },
+  { number: "§ 252", text: "Porušovanie domovej slobody.", penalty: "Peňažný trest alebo väzenie do 2 rokov" },
+  { number: "§ 253", text: "Krádež.", penalty: "Väzenie do 3 rokov" },
+  { number: "§ 254", text: "Týranie blízkej alebo zverenej osoby.", penalty: "Väzenie do 2 rokov" },
+  { number: "§ 255", text: "Podplácanie a korupcia.", penalty: "Väzenie od 1 do 8 rokov" },
+  { number: "§ 256", text: "Obchodovanie s omamnými látkami.", penalty: "Väzenie od 5 do 15 rokov" },
+  { number: "§ 257", text: "Úmyselné poškodenie životného prostredia.", penalty: "Väzenie do 8 rokov" },
+  { number: "§ 258", text: "Podvod.", penalty: "Väzenie do 5 rokov" },
+  { number: "§ 259", text: "Výroba a držba nelegálnych látok.", penalty: "Väzenie do 10 rokov" },
+ { number: "§ 260", text: "Neoprávnené nakladanie s osobnými údajmi.", penalty: "Peňažný trest alebo väzenie do 2 rokov" },
+
+// Tu pridám aj tie tvoje paragrafy čo si chcel úplne celý text
+
+{ number: "§ 21", text: "Krajna núdza (obrannej núdze). Omylom alebo účelne konanie na odvrátenie nebezpečenstva.", penalty: "-" },
+{ number: "§ 139", text: "Útok na verejného činiteľa (vrátane streľby). Týka sa útokov na štátnych úradníkov alebo policajtov.", penalty: "-" },
+{ number: "§ 155", text: "Ublíženie na zdraví. Zahŕňa rôzne stupne zranení a poškodenia zdravia.", penalty: "-" },
+
+        { number: "§ 212", text: "Krádež.", penalty: "-" },
+        { number: "§ 215", text: "Násilné vniknutie do obydlia alebo iného nebytového priestoru.", penalty: "-" },
+        { number: "§ 221", text: "Poškodenie cudzej veci (majetku).", penalty: "-" },
+        { number: "§ 276", text: "Vytváranie všeobecného ohrozenia. Konanie ohrozujúce život alebo zdravie viacerých ľudí alebo značnú časť spoločnosti.", penalty: "-" }
+      ]
+    },
+    {
+      title: "Zákon o Policajnom zbore",
+      year: 1993,
+      number: 171,
+      paragraphs: [
+        { number: "§ 1", text: "Účel zákona je upraviť zriadenie a činnosť Policajného zboru.", penalty: "-" }
+      ]
+    },
+    {
+      title: "Zákon o cestnej premávke",
+      year: 2009,
+      number: 8,
+      paragraphs: [
+        { number: "§ 15", text: "Povinnosti vodičov motorových vozidiel.", penalty: "pokuta" }
+      ]
+    }
+  ];
+
+  const searchInput = document.getElementById('searchInput');
+  const resultsDiv = document.getElementById('results');
+
+  searchInput.addEventListener('input', () => {
+    const query = searchInput.value.trim().toLowerCase();
+    resultsDiv.innerHTML = '';
+
+    if (query.length < 2) {
+      resultsDiv.innerHTML = '<p>Zadajte aspoň 2 znaky pre vyhľadávanie.</p>';
+      return;
+    }
+
+    const filtered = laws.filter(law => {
+      return law.title.toLowerCase().includes(query) ||
+        law.paragraphs.some(p => p.text.toLowerCase().includes(query) || p.number.toLowerCase().includes(query));
+    });
+
+    if (filtered.length === 0) {
+      resultsDiv.innerHTML = `<p>Žiadne výsledky pre "<strong>${query}</strong>"</p>`;
+      return;
+    }
+
+    filtered.forEach(law => {
+      const lawDiv = document.createElement('div');
+      lawDiv.classList.add('law-entry');
+      lawDiv.innerHTML = `<h3>${law.title} (${law.year}) - č.${law.number}</h3>`;
+
+      law.paragraphs.forEach(p => {
+        if (
+          p.text.toLowerCase().includes(query) ||
+          p.number.toLowerCase().includes(query) ||
+          law.title.toLowerCase().includes(query)
+        ) {
+          lawDiv.innerHTML += `
+            <p><strong>${p.number}:</strong> ${p.text}<br><em>Trest: ${p.penalty}</em></p>
+          `;
+        }
+      });
+
+      resultsDiv.appendChild(lawDiv);
+    });
+  });
+</script>
+
+</body>
+</html>

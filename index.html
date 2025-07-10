@@ -1,0 +1,54 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <title>Vytvoriť Občiansky</title>
+  <style>
+    body {
+      background: #0a0f1d;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      position: relative;
+    }
+    button {
+      padding: 15px 30px;
+      font-size: 18px;
+      background-color: #00bfff;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #009acd;
+    }
+    /* Tlačidlo Staff Team vpravo hore */
+    #staff-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #ff4c4c;
+      border-radius: 8px;
+      border: none;
+    }
+    #staff-button:hover {
+      background-color: #cc3b3b;
+    }
+  </style>
+</head>
+<body>
+  <button id="staff-button" onclick="window.location.href='login.html'">Staff Team</button>
+
+  <h1>Vytvoriť občiansky preukaz</h1>
+  <a href="/auth/discord"><button>Prepojiť s Discordom</button></a>
+</body>
+</html>

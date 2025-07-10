@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <title>DTT WE:RP - Prihlásenie</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Segoe+UI&display=swap');
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #0a0f1d, #1e2746);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #fff;
+      user-select: none;
+      flex-direction: column;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    form {
+      background-color: #111827;
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px #00bfff80;
+      width: 360px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      text-align: center;
+      user-select: none;
+    }
+    label {
+      text-align: left;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #00bfff;
+      user-select: text;
+    }
+    input {
+      padding: 12px 15px;
+      border-radius: 10px;
+      border: none;
+      background-color: #1f2937;
+      color: #ffffff;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+      user-select: text;
+    }
+    input:focus {
+      outline: none;
+      background-color: #2a3959;
+      box-shadow: 0 0 5px #00bfff;
+    }
+    button {
+      margin-top: 10px;
+      padding: 15px 0;
+      background-color: #00bfff;
+      border: none;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    button:hover {
+      background-color: #009acd;
+    }
+    #message {
+      margin-top: 10px;
+      font-weight: 600;
+      min-height: 24px;
+      color: #ff6b6b; /* error color */
+      user-select: text;
+    }
+  </style>
+</head>
+<body>
+
+  <form id="loginForm" autocomplete="off">
+    <label for="username">Meno:</label>
+    <input type="text" id="username" autocomplete="off" required />
+
+    <label for="password">Heslo:</label>
+    <input type="password" id="password" autocomplete="off" required />
+
+    <button type="submit">Prihlásiť sa</button>
+    <div id="message"></div>
+  </form>
+
+  <script>
+    const loginForm = document.getElementById('loginForm');
+    const message = document.getElementById('message');
+
+    // Tajné prihlasovacie údaje, nikdy ich nezverejňuj na verejnom servri!
+    const credentials = {
+      'Admin': 'WESKRP',
+     
+    };
+
+    loginForm.addEventListener('submit', e => {
+      e.preventDefault();
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (!username || !password) {
+        message.style.color = '#ff6b6b';
+        message.textContent = 'Vyplň všetky polia.';
+        return;
+      }
+
+      if (credentials[username] && credentials[username] === password) {
+        // Prihlásenie úspešné, uložíme meno do sessionStorage
+        sessionStorage.setItem('user', username);
+        sessionStorage.setItem('botStatus', 'online'); // Príklad uloženia statusu
+        message.style.color = '#4ade80';
+        message.textContent = `Prihlásenie úspešné, vitaj, ${username}!`;
+
+        setTimeout(() => {
+          window.location.href = 'adminv.html';
+        }, 1000);
+      } else {
+        message.style.color = '#ff6b6b';
+        message.textContent = 'Nesprávne meno alebo heslo.';
+      }
+    });
+  </script>
+
+</body>
+</html>

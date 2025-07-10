@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <title>Administrátorský režim</title>
+  <style>
+    body {
+      background: #111827;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    h1 {
+      color: #00bfff;
+      margin-bottom: 30px;
+    }
+    .mod-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      max-width: 600px;
+      justify-content: center;
+    }
+    .mod-button {
+      background-color: #1f2937;
+      border-radius: 10px;
+      padding: 15px 25px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      min-width: 130px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 0 10px #00bfff44;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    .mod-button:hover {
+      background-color: #00bfff;
+      color: #111827;
+    }
+    .status {
+      margin-top: 8px;
+      font-size: 0.9em;
+      font-weight: normal;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <h1>Administrátorský režim</h1>
+  <div class="mod-list">
+    <div class="mod-button">
+      Mišo
+      <span class="status">Neutral</span>
+    </div>
+    <div class="mod-button">
+      Brock
+      <span class="status">Neutral</span>
+    </div>
+    <div class="mod-button">
+      Černák
+      <span class="status">Neutral</span>
+    </div>
+    <div class="mod-button">
+      Sc0ty
+      <span class="status">Neutral</span>
+    </div>
+    <div class="mod-button">
+      Seko
+      <span class="status">Neutral</span>
+    </div>
+    <div class="mod-button">
+      Šupa
+      <span class="status">Neutral</span>
+    </div>
+    <div class="mod-button">
+      7g
+      <span class="status">Neutral</span>
+    </div>
+  </div>
+</body>
+</html>

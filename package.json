@@ -1,0 +1,14 @@
+{
+  "name": "uloha-dtt-bot",
+  "version": "1.0.0",
+  "description": "Jednoduchý Discord bot",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.11.0",
+    "dotenv": "^16.6.1"
+  }
+}
