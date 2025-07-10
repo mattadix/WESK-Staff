@@ -75,7 +75,6 @@
       'Mattad': 'TatkoŠmolko',
       'George': 'Borec',
       'Brock': 'Šmolko'
-    
     };
 
     const loginBtn = document.getElementById('loginBtn');
@@ -84,7 +83,7 @@
     function pridajLog(user, sprava) {
       const logs = JSON.parse(localStorage.getItem('playerLogs')) || [];
       const casBratislava = new Date().toLocaleString('sk-SK', { timeZone: 'Europe/Bratislava' });
-      logs.push([${casBratislava}] (${user}): ${sprava});
+      logs.push(`[${casBratislava}] (${user}): ${sprava}`);
       localStorage.setItem('playerLogs', JSON.stringify(logs));
     }
 
@@ -123,7 +122,7 @@
         sessionStorage.setItem('user', user);
         pridajLog(user, 'Bežné prihlásenie úspešné');
         errorMsg.style.color = '#4ade80';
-        errorMsg.textContent = Prihlásenie úspešné, vitaj, ${user}!;
+        errorMsg.textContent = `Prihlásenie úspešné, vitaj, ${user}!`;
         setTimeout(() => window.location.href = 'main.html', 1000);
         return;
       }
