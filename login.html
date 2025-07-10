@@ -1,4 +1,4 @@
-v<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="sk">
 <head>
   <meta charset="UTF-8" />
@@ -68,14 +68,14 @@ v<!DOCTYPE html>
   </div>
 
   <script>
-    // Heslá pre používateľov
+    // Heslá len pre Policiu a ERROR + 3 bežných užívateľov
     const credentials = {
       'Policia': 'SR',
       'ERROR': '!',
       'Mattad': 'TatkoŠmolko',
       'George': 'Borec',
-      'Brock': 'Šmolko',
-      'TEST': '123'
+      'Brock': 'Šmolko'
+    
     };
 
     const loginBtn = document.getElementById('loginBtn');
@@ -84,7 +84,7 @@ v<!DOCTYPE html>
     function pridajLog(user, sprava) {
       const logs = JSON.parse(localStorage.getItem('playerLogs')) || [];
       const casBratislava = new Date().toLocaleString('sk-SK', { timeZone: 'Europe/Bratislava' });
-      logs.push(`[${casBratislava}] (${user}): ${sprava}`);
+      logs.push([${casBratislava}] (${user}): ${sprava});
       localStorage.setItem('playerLogs', JSON.stringify(logs));
     }
 
@@ -118,12 +118,12 @@ v<!DOCTYPE html>
         return;
       }
 
-      // Bežné prihlásenie (Mattad, George, Brock, TEST)
+      // Bežné prihlásenie (Mattad, George, Brock)
       if (credentials[user] && credentials[user] === pass) {
         sessionStorage.setItem('user', user);
         pridajLog(user, 'Bežné prihlásenie úspešné');
         errorMsg.style.color = '#4ade80';
-        errorMsg.textContent = `Prihlásenie úspešné, vitaj, ${user}!`;
+        errorMsg.textContent = Prihlásenie úspešné, vitaj, ${user}!;
         setTimeout(() => window.location.href = 'main.html', 1000);
         return;
       }
