@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+v<!DOCTYPE html>
 <html lang="sk">
 <head>
   <meta charset="UTF-8" />
@@ -68,13 +68,13 @@
   </div>
 
   <script>
-    // Heslá len pre Policiu a ERROR + 3 bežných užívateľov
+    // Heslá pre používateľov
     const credentials = {
       'Policia': 'SR',
       'ERROR': '!',
       'Mattad': 'TatkoŠmolko',
       'George': 'Borec',
-      'Brock': 'Šmolko'
+      'Brock': 'Šmolko',
       'TEST': '123'
     };
 
@@ -118,7 +118,7 @@
         return;
       }
 
-      // Bežné prihlásenie (Mattad, George, Brock)
+      // Bežné prihlásenie (Mattad, George, Brock, TEST)
       if (credentials[user] && credentials[user] === pass) {
         sessionStorage.setItem('user', user);
         pridajLog(user, 'Bežné prihlásenie úspešné');
