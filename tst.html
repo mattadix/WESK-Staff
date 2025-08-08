@@ -5,465 +5,358 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>West Slovakia Roleplay</title>
 <style>
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: #0b1d3a;
-        color: #d0e7ff;
-        text-align: center;
-        user-select: none;
-        overflow: hidden;
-        position: relative;
-        padding-top: 110px;
-    }
+  body {
+    margin: 0; padding: 0;
+    background: #0b1d3a;
+    color: #c9e0ff;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    user-select: none;
+  }
+  button {
+    cursor: pointer;
+    border-radius: 10px;
+    border: 2px solid #3399ff;
+    background-color: rgba(11,29,58,0.85);
+    color: #c9e0ff;
+    font-weight: 700;
+    padding: 12px 28px;
+    font-size: 1.2em;
+    margin: 10px 15px;
+    text-shadow: 0 0 8px #3399ff;
+    transition: background-color 0.3s, color 0.3s;
+    user-select: none;
+  }
+  button:hover {
+    background-color: #3399ff;
+    color: #0b1d3a;
+  }
+  button.active {
+    background-color: #3399ff;
+    color: #0b1d3a;
+    cursor: default;
+  }
 
-    /* Späť tlačidlo vpravo hore */
-    .back-button {
-        position: fixed;
-        top: 15px;
-        right: 15px;
-        background-color: rgba(11, 29, 58, 0.85);
-        border: 2px solid #3399ff;
-        color: #d0e7ff;
-        font-weight: 700;
-        padding: 10px 18px;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 1em;
-        text-shadow: 0 0 5px #66b3ff;
-        transition: background-color 0.3s, color 0.3s;
-        z-index: 20;
-    }
-    .back-button:hover {
-        background-color: #3399ff;
-        color: #0b1d3a;
-        border-color: #d0e7ff;
-    }
+  #introScreen {
+    margin-top: 180px;
+  }
+  #mainMenu {
+    display: none;
+    margin-top: 30px;
+  }
 
-    /* Veľký hlavný názov */
-    h1#mainTitle {
-        font-size: 3.5em;
-        font-weight: 900;
-        color: #66b3ff;
-        text-shadow: 0 0 25px #99ccff;
-        margin-bottom: 10px;
-        user-select: text;
-        display: none; /* skryté na začiatku */
-    }
+  #topButtons {
+    display: none;
+    margin-top: 20px;
+  }
 
-    /* Umelecké meno Mattad */
-    h2#artistName {
-        font-size: 2.7em;
-        font-weight: 900;
-        color: #3399ff;
-        text-shadow: 0 0 18px #66b3ff;
-        margin: 0;
-        user-select: text;
-        display: none;
-    }
+  #topButtons button {
+    margin: 0 12px;
+    min-width: 140px;
+  }
 
-    /* Pozícia majiteľa */
-    p#ownerRole {
-        font-size: 1.4em;
-        font-weight: 700;
-        color: #3399ff;
-        text-shadow: 0 0 15px #66b3ff;
-        margin-top: 0;
-        margin-bottom: 30px;
-        user-select: text;
-        display: none;
-    }
+  #backButton {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    display: none;
+    padding: 10px 16px;
+    font-size: 1em;
+    border: 2px solid #3399ff;
+    background-color: rgba(11,29,58,0.85);
+    color: #c9e0ff;
+    font-weight: 700;
+    border-radius: 8px;
+    text-shadow: 0 0 7px #3399ff;
+    user-select: none;
+  }
+  #backButton:hover {
+    background-color: #3399ff;
+    color: #0b1d3a;
+  }
 
-    /* Popis servera - stále viditeľný */
-    #description {
-        max-width: 700px;
-        margin: 0 auto 30px auto;
-        font-size: 1.3em;
-        line-height: 1.5;
-        font-weight: 600;
-        color: #c9e0ff;
-        text-shadow: 0 0 8px #3399ff;
-        user-select: text;
-        width: 90vw;
-        max-width: 700px;
-        position: fixed;
-        top: 15px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 20;
-    }
+  #contentArea {
+    max-width: 720px;
+    margin: 30px auto 60px auto;
+    background-color: rgba(11,29,58,0.9);
+    border-radius: 18px;
+    padding: 30px 25px;
+    color: #c9e0ff;
+    font-weight: 600;
+    font-size: 1.3em;
+    min-height: 320px;
+    box-shadow: 0 0 30px #3399ff;
+    user-select: text;
+  }
 
-    /* Menu s tromi tlačidlami - na začiatku skryté */
-    #menuButtons {
-        position: fixed;
-        top: 70px;
-        left: 50%;
-        transform: translateX(-50%);
-        display: none; /* skryté na začiatku */
-        gap: 35px;
-        z-index: 20;
-        user-select: none;
-    }
+  /* Titles */
+  #mainTitle {
+    font-size: 3em;
+    font-weight: 900;
+    margin: 0 0 15px 0;
+    color: #66b3ff;
+    text-shadow: 0 0 25px #99ccff;
+  }
+  #artistName {
+    font-size: 2.4em;
+    font-weight: 900;
+    margin: 10px 0 10px 0;
+    color: #3399ff;
+    text-shadow: 0 0 15px #66b3ff;
+  }
+  #ownerRole {
+    font-size: 1.5em;
+    font-weight: 700;
+    margin: 0 0 30px 0;
+    color: #3399ff;
+    text-shadow: 0 0 15px #66b3ff;
+  }
 
-    /* Štýl tlačidiel */
-    button.main-btn {
-        background-color: rgba(11, 29, 58, 0.85);
-        border: 3px solid #3399ff;
-        color: #d0e7ff;
-        font-weight: 700;
-        font-size: 1.3em;
-        padding: 14px 28px;
-        border-radius: 12px;
-        cursor: pointer;
-        text-shadow: 0 0 7px #66b3ff;
-        transition: background-color 0.3s, color 0.3s;
-        min-width: 170px;
-        box-shadow: 0 0 12px #3399ff;
-        position: relative;
-        overflow: hidden;
-    }
-    button.main-btn:hover {
-        background-color: #3399ff;
-        color: #0b1d3a;
-        border-color: #c9e0ff;
-        box-shadow: 0 0 20px #99ccff;
-    }
+  /* Staff animation */
+  #staffAnimation {
+    position: relative;
+    width: 100%;
+    height: 270px;
+    background: radial-gradient(ellipse at center, #001029 30%, #0b1d3a 90%);
+    border-radius: 18px;
+    box-shadow: inset 0 0 25px #3399ff;
+    overflow: hidden;
+  }
+  #rocket {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70px;
+    height: 140px;
+    background: linear-gradient(45deg, #66b3ff 0%, #1a3a6f 100%);
+    border-radius: 35px 35px 20px 20px;
+    box-shadow: 0 0 20px #99ccff;
+    clip-path: polygon(
+      50% 0%, 
+      90% 30%, 
+      70% 90%, 
+      90% 100%, 
+      10% 100%, 
+      30% 90%, 
+      10% 30%
+    );
+    filter: drop-shadow(0 0 12px #66b3ff);
+    animation: rocketMove 3s ease-in-out infinite;
+    z-index: 10;
+  }
+  #flames {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 40px;
+    background: radial-gradient(ellipse at center, #66b3ff 0%, transparent 70%);
+    filter: drop-shadow(0 0 14px #3399ff);
+    border-radius: 15px;
+    animation: flamesFlicker 1.5s ease-in-out infinite;
+    z-index: 9;
+  }
+  #stars {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.9;
+    filter: drop-shadow(0 0 3px #99ccff);
+    animation-name: starFly;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+  .star.small { width: 2px; height: 2px; }
+  .star.medium { width: 4px; height: 4px; }
+  .star.large { width: 6px; height: 6px; }
 
-    button.main-btn.active {
-        background-color: #3399ff;
-        color: #0b1d3a;
-        border-color: #c9e0ff;
-        box-shadow: 0 0 20px #99ccff;
-        cursor: default;
-    }
+  #staffUnavailable {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #99ccff;
+    font-size: 2em;
+    font-weight: 700;
+    text-shadow: 0 0 10px #66b3ff;
+    user-select: none;
+  }
+  #workingText {
+    position: absolute;
+    bottom: 15px;
+    right: 20px;
+    font-weight: 900;
+    font-size: 0.9em;
+    color: #3399ff;
+    font-style: italic;
+    text-shadow: 0 0 5px #66b3ff;
+    user-select: none;
+  }
 
-    /* Úvodné jedno veľké tlačidlo */
-    #introButton {
-        margin-top: 180px;
-        background-color: #3399ff;
-        border: none;
-        border-radius: 14px;
-        font-size: 2.5em;
-        font-weight: 900;
-        padding: 20px 50px;
-        color: #0b1d3a;
-        cursor: pointer;
-        text-shadow: 0 0 15px #99ccff;
-        box-shadow: 0 0 25px #66b3ff;
-        transition: background-color 0.3s, color 0.3s;
-        user-select: none;
-    }
-    #introButton:hover {
-        background-color: #1a73e8;
-        color: #d0e7ff;
-        box-shadow: 0 0 30px #99ccff;
-    }
-
-    /* Hlavný obsah */
-    #contentPanel {
-        max-width: 720px;
-        margin: 0 auto 80px auto;
-        background-color: rgba(11,29,58,0.9);
-        padding: 30px 25px;
-        border-radius: 16px;
-        box-shadow: 0 0 20px #3399ff;
-        min-height: 300px;
-        color: #d0e7ff;
-        font-weight: 600;
-        font-size: 1.4em;
-        user-select: text;
-        position: relative;
-        margin-top: 40px;
-        display: none; /* skryté na začiatku */
-    }
-
-    /* Fotogaléria text */
-    #galleryText {
-        font-size: 2em;
-        font-weight: 700;
-        color: #66b3ff;
-        text-shadow: 0 0 18px #99ccff;
-        margin-top: 40px;
-        user-select: none;
-    }
-
-    /* Staff team animácia rakety s hviezdami */
-    #staffContent {
-        position: relative;
-        height: 250px;
-        overflow: hidden;
-        background: radial-gradient(ellipse at center, #001029 30%, #0b1d3a 90%);
-        border-radius: 16px;
-        box-shadow: 0 0 25px #3399ff inset;
-        user-select: none;
-    }
-
-    /* Raketa */
-    #rocket {
-        position: absolute;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 70px;
-        height: 140px;
-        background: linear-gradient(45deg, #66b3ff 0%, #1a3a6f 100%);
-        border-radius: 35px 35px 20px 20px;
-        box-shadow: 0 0 15px #99ccff;
-        animation: rocketMove 3s linear infinite;
-        z-index: 10;
-        clip-path: polygon(
-            50% 0%, 
-            90% 30%, 
-            70% 90%, 
-            90% 100%, 
-            10% 100%, 
-            30% 90%, 
-            10% 30%
-        );
-        filter: drop-shadow(0 0 10px #66b3ff);
-    }
-
-    /* Plamene pod raketou */
-    #rocketFlames {
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 30px;
-        height: 40px;
-        background: radial-gradient(ellipse at center, #66b3ff 0%, transparent 70%);
-        filter: drop-shadow(0 0 12px #3399ff);
-        border-radius: 15px;
-        animation: flamesFlicker 1.5s ease-in-out infinite;
-        z-index: 9;
-    }
-
-    /* Hviezdy na pozadí staff */
-    #starsContainer {
-        position: absolute;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        overflow: hidden;
-        pointer-events: none;
-        z-index: 1;
-    }
-
-    .star {
-        position: absolute;
-        background: white;
-        border-radius: 50%;
-        opacity: 0.9;
-        filter: drop-shadow(0 0 3px #99ccff);
-        animation-name: starFly;
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
-    }
-
-    /* Rôzne veľkosti hviezd */
-    .star.small {
-        width: 2px;
-        height: 2px;
-    }
-    .star.medium {
-        width: 4px;
-        height: 4px;
-    }
-    .star.large {
-        width: 6px;
-        height: 6px;
-    }
-
-    /* Animácia rakety hore a dole */
-    @keyframes rocketMove {
-        0% { bottom: 20px; }
-        50% { bottom: 50px; }
-        100% { bottom: 20px; }
-    }
-
-    /* Animácia plameňov */
-    @keyframes flamesFlicker {
-        0%, 100% { opacity: 0.7; transform: scaleY(1); }
-        50% { opacity: 1; transform: scaleY(1.3) translateY(5px); }
-    }
-
-    /* Hviezdy letia zhora dole */
-    @keyframes starFly {
-        0% {
-            top: -10px;
-            opacity: 1;
-        }
-        100% {
-            top: 260px;
-            opacity: 0;
-        }
-    }
-
-    /* Text "Nedostupné" a "Pracuje sa na tom..." */
-    #staffUnavailable {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: #99ccff;
-        text-shadow: 0 0 10px #66b3ff;
-        font-size: 2em;
-        font-weight: 700;
-        user-select: none;
-    }
-    #workingText {
-        position: absolute;
-        bottom: 15px;
-        right: 20px;
-        font-weight: 900;
-        font-size: 0.9em;
-        color: #3399ff;
-        text-shadow: 0 0 5px #66b3ff;
-        font-style: italic;
-        user-select: none;
-    }
+  @keyframes rocketMove {
+    0%, 100% { bottom: 30px; }
+    50% { bottom: 60px; }
+  }
+  @keyframes flamesFlicker {
+    0%, 100% { opacity: 0.7; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.3) translateY(5px); }
+  }
+  @keyframes starFly {
+    0% { top: -10px; opacity: 1; }
+    100% { top: 280px; opacity: 0; }
+  }
 </style>
 </head>
 <body>
 
-<!-- Popis servera stále hore -->
-<div id="description">
-    Roleplay s najrozvinutejšou technológiou RP, najlepší developeri v CZSK scéne, RP v ERLC, profesionálny staff team a DTT profesionálne frakcie.
+<!-- Úvodný Screen s jedným tlačidlom -->
+<div id="introScreen">
+  <button id="startButton">Developer Tím</button>
 </div>
 
-<!-- Úvodné tlačidlo -->
-<button id="introButton" onclick="showMainContent()">Developer Tím</button>
-
-<!-- Menu s tromi tlačidlami, skryté na začiatku -->
-<div id="menuButtons">
-    <button class="main-btn active" id="btnDevTeam" onclick="showDevTeam()">Developer Tím</button>
-    <button class="main-btn" id="btnGallery" onclick="showGallery()">Fotogaléria</button>
-    <button class="main-btn" id="btnStaff" onclick="showStaff()">Staff Team</button>
+<!-- Hlavné menu tlačidlá -->
+<div id="topButtons">
+  <button id="btnDeveloper" class="active">Developer Tím</button>
+  <button id="btnGallery">Fotogaléria</button>
+  <button id="btnStaff">Staff Team</button>
 </div>
 
 <!-- Tlačidlo späť -->
-<button class="back-button" onclick="window.location.href='main.html'">Späť</button>
+<button id="backButton">Späť</button>
 
-<!-- Veľké názvy, skryté na začiatku -->
-<h1 id="mainTitle">West Slovakia Roleplay</h1>
-<h2 id="artistName">Mattad</h2>
-<p id="ownerRole">Majiteľ Servera, Hlavný DTT</p>
-
-<!-- Hlavný obsah -->
-<div id="contentPanel">
-</div>
+<!-- Obsahová plocha -->
+<div id="contentArea"></div>
 
 <script>
-    const introButton = document.getElementById('introButton');
-    const menuButtons = document.getElementById('menuButtons');
-    const mainTitle = document.getElementById('mainTitle');
-    const artistName = document.getElementById('artistName');
-    const ownerRole = document.getElementById('ownerRole');
-    const contentPanel = document.getElementById('contentPanel');
+  const introScreen = document.getElementById('introScreen');
+  const startButton = document.getElementById('startButton');
+  const topButtons = document.getElementById('topButtons');
+  const backButton = document.getElementById('backButton');
+  const contentArea = document.getElementById('contentArea');
 
-    const btnDevTeam = document.getElementById('btnDevTeam');
-    const btnGallery = document.getElementById('btnGallery');
-    const btnStaff = document.getElementById('btnStaff');
+  const btnDeveloper = document.getElementById('btnDeveloper');
+  const btnGallery = document.getElementById('btnGallery');
+  const btnStaff = document.getElementById('btnStaff');
 
-    function clearContent() {
-        contentPanel.innerHTML = '';
+  // Texty pre sekcie
+  const roleplayDescription = `Roleplay s najrozvinutejšou technológiou RP, najlepší developeri v CZSK scéne, RP v ERLC, profesionálny staff team a DTT profesionálne frakcie.`;
+
+  const developerContent = `
+    <h1 id="mainTitle">West Slovakia Roleplay</h1>
+    <p style="font-size:1.25em; font-weight:600; margin-bottom: 40px;">${roleplayDescription}</p>
+    <h2 id="artistName">Mattad</h2>
+    <p id="ownerRole">Majiteľ Servera, Hlavný DTT</p>
+  `;
+
+  const galleryContent = `
+    <h1>Fotky z Roleplayu</h1>
+    <p style="margin-top: 60px; font-style: italic; font-weight: 600; font-size: 1.2em; color: #99ccff;">Zatiaľ žiadne fotografie.</p>
+  `;
+
+  const staffContent = `
+    <div id="staffAnimation">
+      <div id="rocket"></div>
+      <div id="flames"></div>
+      <div id="stars"></div>
+      <div id="staffUnavailable">Nedostupné</div>
+      <div id="workingText">Pracuje sa na tom…</div>
+    </div>
+  `;
+
+  // Generovanie hviezd pre animáciu staff
+  function createStars() {
+    const starsContainer = document.getElementById('stars');
+    if (!starsContainer) return;
+    starsContainer.innerHTML = '';
+    const starSizes = ['small', 'medium', 'large'];
+    for(let i=0; i<40; i++) {
+      const star = document.createElement('div');
+      star.classList.add('star');
+      star.classList.add(starSizes[Math.floor(Math.random()*starSizes.length)]);
+      star.style.left = Math.random()*100 + '%';
+      star.style.animationDuration = (4 + Math.random()*4) + 's';
+      star.style.animationDelay = (Math.random()*-8) + 's';
+      starsContainer.appendChild(star);
     }
+  }
 
-    function setActiveButton(activeBtn) {
-        [btnDevTeam, btnGallery, btnStaff].forEach(btn => {
-            btn.classList.toggle('active', btn === activeBtn);
-        });
+  // Zobraz úvodný screen
+  function showIntro() {
+    introScreen.style.display = 'block';
+    topButtons.style.display = 'none';
+    backButton.style.display = 'none';
+    contentArea.innerHTML = '';
+    setActiveButton(null);
+  }
+
+  // Nastav aktívne tlačidlo
+  function setActiveButton(button) {
+    [btnDeveloper, btnGallery, btnStaff].forEach(btn => {
+      if(btn === button) btn.classList.add('active');
+      else btn.classList.remove('active');
+    });
+  }
+
+  // Zobraz obsah podľa sekcie
+  function showContent(section) {
+    switch(section) {
+      case 'developer':
+        contentArea.innerHTML = developerContent;
+        break;
+      case 'gallery':
+        contentArea.innerHTML = galleryContent;
+        break;
+      case 'staff':
+        contentArea.innerHTML = staffContent;
+        createStars();
+        break;
     }
+  }
 
-    function showMainContent() {
-        // Skryť úvodné tlačidlo
-        introButton.style.display = 'none';
-        // Ukázať menu tlačidlá a veľké názvy
-        menuButtons.style.display = 'flex';
-        mainTitle.style.display = 'block';
-        artistName.style.display = 'block';
-        ownerRole.style.display = 'block';
-        contentPanel.style.display = 'block';
+  // Spustenie po kliknutí na úvodné tlačidlo
+  startButton.addEventListener('click', () => {
+    introScreen.style.display = 'none';
+    topButtons.style.display = 'flex';
+    backButton.style.display = 'block';
+    showContent('developer');
+    setActiveButton(btnDeveloper);
+  });
 
-        // Zobraziť developer tím ako predvolený obsah
-        showDevTeam();
-    }
+  // Menu tlačidlá eventy
+  btnDeveloper.addEventListener('click', () => {
+    if(btnDeveloper.classList.contains('active')) return;
+    showContent('developer');
+    setActiveButton(btnDeveloper);
+  });
+  btnGallery.addEventListener('click', () => {
+    if(btnGallery.classList.contains('active')) return;
+    showContent('gallery');
+    setActiveButton(btnGallery);
+  });
+  btnStaff.addEventListener('click', () => {
+    if(btnStaff.classList.contains('active')) return;
+    showContent('staff');
+    setActiveButton(btnStaff);
+  });
 
-    function showDevTeam() {
-        clearContent();
-        setActiveButton(btnDevTeam);
+  // Späť tlačidlo
+  backButton.addEventListener('click', () => {
+    showIntro();
+  });
 
-        const devText = document.createElement('div');
-        devText.style.fontWeight = '700';
-        devText.style.fontSize = '1.4em';
-        devText.style.color = '#66b3ff';
-        devText.style.textShadow = '0 0 10px #99ccff';
-        devText.style.marginTop = '15px';
-        devText.innerHTML = `
-            <p>Developer tím:</p>
-            <p><strong>Mattad</strong> – majiteľ servera, hlavný DTT</p>
-        `;
-        contentPanel.appendChild(devText);
-    }
-
-    function showGallery() {
-        clearContent();
-        setActiveButton(btnGallery);
-
-        const galleryText = document.createElement('div');
-        galleryText.id = 'galleryText';
-        galleryText.textContent = 'Fotogaléria je v príprave...';
-        contentPanel.appendChild(galleryText);
-    }
-
-    function showStaff() {
-        clearContent();
-        setActiveButton(btnStaff);
-
-        // Vytvoríme kontajner staff team s raketou a hviezdami
-        const staffContent = document.createElement('div');
-        staffContent.id = 'staffContent';
-
-        const starsContainer = document.createElement('div');
-        starsContainer.id = 'starsContainer';
-
-        // Pridáme hviezdy na pozadí
-        for (let i = 0; i < 40; i++) {
-            const star = document.createElement('div');
-            star.classList.add('star');
-            const sizeClass = ['small', 'medium', 'large'][Math.floor(Math.random() * 3)];
-            star.classList.add(sizeClass);
-            star.style.left = `${Math.random() * 100}%`;
-            star.style.animationDuration = `${3 + Math.random() * 3}s`;
-            star.style.animationDelay = `${Math.random() * 5}s`;
-            starsContainer.appendChild(star);
-        }
-
-        // Raketa a plamene
-        const rocket = document.createElement('div');
-        rocket.id = 'rocket';
-
-        const flames = document.createElement('div');
-        flames.id = 'rocketFlames';
-
-        staffContent.appendChild(starsContainer);
-        staffContent.appendChild(rocket);
-        staffContent.appendChild(flames);
-
-        // Text "Nedostupné"
-        const unavailableText = document.createElement('div');
-        unavailableText.id = 'staffUnavailable';
-        unavailableText.textContent = 'Nedostupné';
-
-        // Text "Pracuje sa na tom..."
-        const workingText = document.createElement('div');
-        workingText.id = 'workingText';
-        workingText.textContent = 'Pracuje sa na tom...';
-
-        staffContent.appendChild(unavailableText);
-        staffContent.appendChild(workingText);
-
-        contentPanel.appendChild(staffContent);
-    }
+  // Na začiatku ukáž úvodnú obrazovku
+  showIntro();
 </script>
+
 </body>
 </html>
