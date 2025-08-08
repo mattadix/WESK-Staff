@@ -11,10 +11,10 @@
         background: #0b1d3a;
         color: #d0e7ff;
         text-align: center;
-        padding-top: 120px;
+        user-select: none;
         overflow: hidden;
         position: relative;
-        user-select: none;
+        padding-top: 110px;
     }
 
     /* Späť tlačidlo vpravo hore */
@@ -40,61 +40,66 @@
         border-color: #d0e7ff;
     }
 
-    /* Hlavný veľký názov umeleckého mena */
-    h1#artistName {
+    /* Veľký hlavný názov */
+    h1#mainTitle {
         font-size: 3.5em;
         font-weight: 900;
         color: #66b3ff;
         text-shadow: 0 0 25px #99ccff;
-        margin-bottom: 5px;
+        margin-bottom: 10px;
         user-select: text;
-        position: fixed;
-        top: 15px;
-        left: 15px;
-        z-index: 20;
+        display: none; /* skryté na začiatku */
     }
 
-    /* Výrazná pozícia majiteľa */
+    /* Umelecké meno Mattad */
+    h2#artistName {
+        font-size: 2.7em;
+        font-weight: 900;
+        color: #3399ff;
+        text-shadow: 0 0 18px #66b3ff;
+        margin: 0;
+        user-select: text;
+        display: none;
+    }
+
+    /* Pozícia majiteľa */
     p#ownerRole {
         font-size: 1.4em;
         font-weight: 700;
         color: #3399ff;
         text-shadow: 0 0 15px #66b3ff;
         margin-top: 0;
-        margin-bottom: 0;
+        margin-bottom: 30px;
         user-select: text;
-        position: fixed;
-        top: 70px;
-        left: 15px;
-        z-index: 20;
+        display: none;
     }
 
-    /* Popis servera pod názvom - fixne hore */
+    /* Popis servera - stále viditeľný */
     #description {
         max-width: 700px;
-        margin: 0 auto;
+        margin: 0 auto 30px auto;
         font-size: 1.3em;
         line-height: 1.5;
         font-weight: 600;
         color: #c9e0ff;
         text-shadow: 0 0 8px #3399ff;
         user-select: text;
-        position: fixed;
-        top: 110px;
-        left: 50%;
-        transform: translateX(-50%);
         width: 90vw;
         max-width: 700px;
+        position: fixed;
+        top: 15px;
+        left: 50%;
+        transform: translateX(-50%);
         z-index: 20;
     }
 
-    /* Menu s tlačidlami hore */
+    /* Menu s tromi tlačidlami - na začiatku skryté */
     #menuButtons {
         position: fixed;
-        top: 160px;
+        top: 70px;
         left: 50%;
         transform: translateX(-50%);
-        display: flex;
+        display: none; /* skryté na začiatku */
         gap: 35px;
         z-index: 20;
         user-select: none;
@@ -106,13 +111,13 @@
         border: 3px solid #3399ff;
         color: #d0e7ff;
         font-weight: 700;
-        font-size: 1.4em;
-        padding: 14px 30px;
+        font-size: 1.3em;
+        padding: 14px 28px;
         border-radius: 12px;
         cursor: pointer;
         text-shadow: 0 0 7px #66b3ff;
         transition: background-color 0.3s, color 0.3s;
-        min-width: 200px;
+        min-width: 170px;
         box-shadow: 0 0 12px #3399ff;
         position: relative;
         overflow: hidden;
@@ -124,7 +129,6 @@
         box-shadow: 0 0 20px #99ccff;
     }
 
-    /* Aktivne tlačidlo zvýraznenie */
     button.main-btn.active {
         background-color: #3399ff;
         color: #0b1d3a;
@@ -133,7 +137,29 @@
         cursor: default;
     }
 
-    /* Obsahová sekcia pod menu */
+    /* Úvodné jedno veľké tlačidlo */
+    #introButton {
+        margin-top: 180px;
+        background-color: #3399ff;
+        border: none;
+        border-radius: 14px;
+        font-size: 2.5em;
+        font-weight: 900;
+        padding: 20px 50px;
+        color: #0b1d3a;
+        cursor: pointer;
+        text-shadow: 0 0 15px #99ccff;
+        box-shadow: 0 0 25px #66b3ff;
+        transition: background-color 0.3s, color 0.3s;
+        user-select: none;
+    }
+    #introButton:hover {
+        background-color: #1a73e8;
+        color: #d0e7ff;
+        box-shadow: 0 0 30px #99ccff;
+    }
+
+    /* Hlavný obsah */
     #contentPanel {
         max-width: 720px;
         margin: 0 auto 80px auto;
@@ -147,7 +173,8 @@
         font-size: 1.4em;
         user-select: text;
         position: relative;
-        margin-top: 230px;
+        margin-top: 40px;
+        display: none; /* skryté na začiatku */
     }
 
     /* Fotogaléria text */
@@ -298,31 +325,42 @@
 </head>
 <body>
 
-<!-- Veľké umelecké meno a pozícia -->
-<h1 id="artistName">Mattad</h1>
-<p id="ownerRole">Majiteľ Servera, Hlavný DTT</p>
-
-<!-- Popis servera -->
+<!-- Popis servera stále hore -->
 <div id="description">
     Roleplay s najrozvinutejšou technológiou RP, najlepší developeri v CZSK scéne, RP v ERLC, profesionálny staff team a DTT profesionálne frakcie.
 </div>
 
-<!-- Menu s dvoma tlačidlami -->
+<!-- Úvodné tlačidlo -->
+<button id="introButton" onclick="showMainContent()">Developer Tím</button>
+
+<!-- Menu s tromi tlačidlami, skryté na začiatku -->
 <div id="menuButtons">
-    <button class="main-btn active" id="btnGallery" onclick="showGallery()">Fotogaléria</button>
+    <button class="main-btn active" id="btnDevTeam" onclick="showDevTeam()">Developer Tím</button>
+    <button class="main-btn" id="btnGallery" onclick="showGallery()">Fotogaléria</button>
     <button class="main-btn" id="btnStaff" onclick="showStaff()">Staff Team</button>
 </div>
 
 <!-- Tlačidlo späť -->
 <button class="back-button" onclick="window.location.href='main.html'">Späť</button>
 
+<!-- Veľké názvy, skryté na začiatku -->
+<h1 id="mainTitle">West Slovakia Roleplay</h1>
+<h2 id="artistName">Mattad</h2>
+<p id="ownerRole">Majiteľ Servera, Hlavný DTT</p>
+
 <!-- Hlavný obsah -->
 <div id="contentPanel">
-    <!-- Dynamicky sa tu zobrazuje obsah -->
 </div>
 
 <script>
+    const introButton = document.getElementById('introButton');
+    const menuButtons = document.getElementById('menuButtons');
+    const mainTitle = document.getElementById('mainTitle');
+    const artistName = document.getElementById('artistName');
+    const ownerRole = document.getElementById('ownerRole');
     const contentPanel = document.getElementById('contentPanel');
+
+    const btnDevTeam = document.getElementById('btnDevTeam');
     const btnGallery = document.getElementById('btnGallery');
     const btnStaff = document.getElementById('btnStaff');
 
@@ -331,9 +369,40 @@
     }
 
     function setActiveButton(activeBtn) {
-        [btnGallery, btnStaff].forEach(btn => {
+        [btnDevTeam, btnGallery, btnStaff].forEach(btn => {
             btn.classList.toggle('active', btn === activeBtn);
         });
+    }
+
+    function showMainContent() {
+        // Skryť úvodné tlačidlo
+        introButton.style.display = 'none';
+        // Ukázať menu tlačidlá a veľké názvy
+        menuButtons.style.display = 'flex';
+        mainTitle.style.display = 'block';
+        artistName.style.display = 'block';
+        ownerRole.style.display = 'block';
+        contentPanel.style.display = 'block';
+
+        // Zobraziť developer tím ako predvolený obsah
+        showDevTeam();
+    }
+
+    function showDevTeam() {
+        clearContent();
+        setActiveButton(btnDevTeam);
+
+        const devText = document.createElement('div');
+        devText.style.fontWeight = '700';
+        devText.style.fontSize = '1.4em';
+        devText.style.color = '#66b3ff';
+        devText.style.textShadow = '0 0 10px #99ccff';
+        devText.style.marginTop = '15px';
+        devText.innerHTML = `
+            <p>Developer tím:</p>
+            <p><strong>Mattad</strong> – majiteľ servera, hlavný DTT</p>
+        `;
+        contentPanel.appendChild(devText);
     }
 
     function showGallery() {
@@ -342,7 +411,7 @@
 
         const galleryText = document.createElement('div');
         galleryText.id = 'galleryText';
-        galleryText.textContent = 'Fotky z Roleplayu';
+        galleryText.textContent = 'Fotogaléria je v príprave...';
         contentPanel.appendChild(galleryText);
     }
 
@@ -350,55 +419,51 @@
         clearContent();
         setActiveButton(btnStaff);
 
-        const staffDiv = document.createElement('div');
-        staffDiv.id = 'staffContent';
+        // Vytvoríme kontajner staff team s raketou a hviezdami
+        const staffContent = document.createElement('div');
+        staffContent.id = 'staffContent';
 
+        const starsContainer = document.createElement('div');
+        starsContainer.id = 'starsContainer';
+
+        // Pridáme hviezdy na pozadí
+        for (let i = 0; i < 40; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            const sizeClass = ['small', 'medium', 'large'][Math.floor(Math.random() * 3)];
+            star.classList.add(sizeClass);
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.animationDuration = `${3 + Math.random() * 3}s`;
+            star.style.animationDelay = `${Math.random() * 5}s`;
+            starsContainer.appendChild(star);
+        }
+
+        // Raketa a plamene
         const rocket = document.createElement('div');
         rocket.id = 'rocket';
 
         const flames = document.createElement('div');
         flames.id = 'rocketFlames';
 
-        const starsContainer = document.createElement('div');
-        starsContainer.id = 'starsContainer';
+        staffContent.appendChild(starsContainer);
+        staffContent.appendChild(rocket);
+        staffContent.appendChild(flames);
 
-        const starSizes = ['small', 'medium', 'large'];
-        for (let i = 0; i < 30; i++) {
-            const star = document.createElement('div');
-            star.classList.add('star');
-            const size = starSizes[Math.floor(Math.random() * starSizes.length)];
-            star.classList.add(size);
-            star.style.left = Math.random() * 100 + '%';
-
-            const duration = 3000 + Math.random() * 2000;
-            const delay = Math.random() * 3000;
-
-            star.style.animationDuration = duration + 'ms';
-            star.style.animationDelay = delay + 'ms';
-
-            starsContainer.appendChild(star);
-        }
-
+        // Text "Nedostupné"
         const unavailableText = document.createElement('div');
         unavailableText.id = 'staffUnavailable';
         unavailableText.textContent = 'Nedostupné';
 
+        // Text "Pracuje sa na tom..."
         const workingText = document.createElement('div');
         workingText.id = 'workingText';
-        workingText.textContent = 'Pracuje sa na tom…';
+        workingText.textContent = 'Pracuje sa na tom...';
 
-        staffDiv.appendChild(starsContainer);
-        staffDiv.appendChild(rocket);
-        staffDiv.appendChild(flames);
-        staffDiv.appendChild(unavailableText);
-        staffDiv.appendChild(workingText);
+        staffContent.appendChild(unavailableText);
+        staffContent.appendChild(workingText);
 
-        contentPanel.appendChild(staffDiv);
+        contentPanel.appendChild(staffContent);
     }
-
-    // Štartujeme s fotogalériou
-    showGallery();
 </script>
-
 </body>
 </html>
