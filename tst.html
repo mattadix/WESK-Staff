@@ -32,22 +32,18 @@
     cursor: pointer;
     transition: background-color 0.3s;
   }
-  .top-buttons button:hover:not(.back) {
+  .top-buttons button:hover {
     background-color: #1e5bd1;
-  }
-  .top-buttons button.back:hover {
-    background-color: #cc3333;
-    color: white;
-    border-color: #ff5555;
   }
   .top-buttons button.back {
     background-color: #881111;
     border-color: #cc3333;
     color: #ffbbbb;
   }
-  .top-buttons button:disabled {
-    cursor: default;
-    opacity: 0.5;
+  .top-buttons button.back:hover {
+    background-color: #cc3333;
+    color: white;
+    border-color: #ff5555;
   }
   main {
     flex: 1;
@@ -74,8 +70,8 @@
 <body>
 
 <div class="top-buttons">
-  <button id="devBtn">Developer Tím</button>
-  <button id="staffBtn">Staff Team</button>
+  <button onclick="window.location.href='nedostupne.html'">Developer Tím</button>
+  <button onclick="window.location.href='nedostupne.html'">Staff Team</button>
   <button class="back" onclick="window.location.href='main.html'">Späť</button>
 </div>
 
@@ -83,16 +79,6 @@
   <h1>Mattad</h1>
   <div class="subtitle">Majiteľ Servera, Hlavný Discord Technik oddelenie WEBU</div>
 </main>
-
-<script>
-  // Developer Tím a Staff Team tlačidlá nemajú funkciu, len vizuálne reagujú
-  document.getElementById('devBtn').addEventListener('click', () => {
-    alert('Developer Tím sekcia je momentálne nedostupná.');
-  });
-  document.getElementById('staffBtn').addEventListener('click', () => {
-    alert('Staff Team sekcia je momentálne nedostupná.');
-  });
-</script>
 
 </body>
 </html>
