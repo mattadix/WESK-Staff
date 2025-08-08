@@ -5,24 +5,78 @@
 <title>Produkty pre stránky</title>
 <style>
     body {
-        background: radial-gradient(circle at center, #001f3f, #000);
-        color: white;
+        margin: 0;
         font-family: Arial, sans-serif;
+        background: url('A584F611-84BD-4DD4-9D10-BF9FD5A55CDD.jpeg') center/cover no-repeat fixed;
+        color: white;
         text-align: center;
-        padding: 20px;
+        padding-top: 60px;
     }
+
+    /* Animované ohníky na pozadí */
+    body::after {
+        content: "🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        font-size: 2em;
+        opacity: 0.15;
+        animation: flicker 2s infinite alternate;
+        pointer-events: none;
+    }
+    @keyframes flicker {
+        0% { opacity: 0.1; }
+        100% { opacity: 0.2; }
+    }
+
+    /* Horné tlačidlá */
+    .top-buttons {
+        position: fixed;
+        top: 10px;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        padding: 0 15px;
+        box-sizing: border-box;
+    }
+    .top-buttons button {
+        background-color: rgba(0, 0, 0, 0.6);
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1em;
+    }
+    .top-buttons button:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    /* Developer tím okno */
+    #developerInfo {
+        display: none;
+        background-color: rgba(0, 0, 0, 0.8);
+        padding: 20px;
+        border-radius: 10px;
+        max-width: 300px;
+        margin: 20px auto;
+        text-align: center;
+    }
+    #developerInfo img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-top: 10px;
+    }
+
+    /* Vyhľadávanie paragrafov */
     h1 {
         font-size: 2.5em;
         color: #00aaff;
         text-shadow: 0 0 15px #00f;
-    }
-    .fire {
-        font-size: 2em;
-        animation: flicker 1.5s infinite alternate;
-    }
-    @keyframes flicker {
-        0% { opacity: 1; }
-        100% { opacity: 0.6; }
     }
     .search-box {
         margin-top: 20px;
@@ -33,7 +87,7 @@
         border-radius: 5px;
         border: none;
     }
-    button {
+    button.search {
         padding: 8px 12px;
         font-size: 1em;
         border: none;
@@ -53,12 +107,24 @@
 </head>
 <body>
 
-<h1>🔥 Produkty pre stránky 🔥</h1>
+<div class="top-buttons">
+    <button onclick="showDeveloper()">Developer Tím</button>
+    <button onclick="window.location.href='main.html'">Späť</button>
+</div>
 
+<h1>🔥 Produkty pre stránky 🔥</h1>
 <h2>Stránka 1 – Policajné zákony</h2>
+
+<div id="developerInfo">
+    <h3>mattadixx</h3>
+    <p>Vytvoril stránku</p>
+    <p>Nascriptoval</p>
+    <img src="A584F611-84BD-4DD4-9D10-BF9FD5A55CDD.jpeg" alt="Profilovka">
+</div>
+
 <div class="search-box">
     <input type="number" id="paragrafInput" placeholder="Zadajte číslo paragrafu (0-20)" min="0" max="20">
-    <button onclick="vyhladaj()">Vyhľadať</button>
+    <button class="search" onclick="vyhladaj()">Vyhľadať</button>
 </div>
 
 <div id="result"></div>
@@ -97,6 +163,11 @@ function vyhladaj() {
     } else {
         resultDiv.innerHTML = "Paragraf s týmto číslom neexistuje.";
     }
+}
+
+function showDeveloper() {
+    const info = document.getElementById("developerInfo");
+    info.style.display = (info.style.display === "none" || info.style.display === "") ? "block" : "none";
 }
 </script>
 
